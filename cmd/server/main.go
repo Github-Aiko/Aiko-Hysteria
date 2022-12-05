@@ -18,7 +18,7 @@ import (
 
 const (
 	Name          = "Aiko-Hysteria"
-	Version       = "0.3"
+	Version       = "0.4"
 	CopyRight     = "AikoCute"
 	LogLevelDebug = "debug"
 	LogLevelError = "error"

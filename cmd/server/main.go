@@ -2,22 +2,23 @@ package main
 
 import (
 	"fmt"
-	log "github.com/sirupsen/logrus"
-	cli "github.com/urfave/cli/v2"
-	"github.com/Github-Aiko/Aiko-Hysteria/internal/app"
-	"github.com/Github-Aiko/Aiko-Hysteria/internal/app/service"
-	"github.com/Github-Aiko/Aiko-Hysteria/internal/pkg/api"
 	"io/ioutil"
 	"os"
 	"os/signal"
 	"runtime"
 	"syscall"
 	"time"
+
+	"github.com/Github-Aiko/Aiko-Hysteria/internal/app"
+	"github.com/Github-Aiko/Aiko-Hysteria/internal/app/service"
+	"github.com/Github-Aiko/Aiko-Hysteria/internal/pkg/api"
+	log "github.com/sirupsen/logrus"
+	cli "github.com/urfave/cli/v2"
 )
 
 const (
 	Name          = "Aiko-Hysteria"
-	Version       = "0.1"
+	Version       = "0.2"
 	CopyRight     = "AikoCute"
 	LogLevelDebug = "debug"
 	LogLevelError = "error"

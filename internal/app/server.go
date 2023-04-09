@@ -8,6 +8,8 @@ import (
 	"github.com/Github-Aiko/Aiko-Hysteria/internal/pkg/transport"
 	"github.com/Github-Aiko/Aiko-Hysteria/internal/pkg/transport/pktconns"
 	"github.com/Github-Aiko/Aiko-Hysteria/internal/pkg/utils"
+	"github.com/quic-go/quic-go"
+	"github.com/sirupsen/logrus"
 	"io"
 	"net"
 	"time"

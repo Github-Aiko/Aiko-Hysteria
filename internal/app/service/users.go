@@ -66,10 +66,9 @@ func (s *UsersService) Start() error {
 
 func (s *UsersService) Close() error {
 	if err := s.fuPeriodicTask.Close(); err != nil {
-		log.Warn("fetch task close error: %s", err)
+		log.Warn("fetch task close error: ", err)
 	}
 	if err := s.rtPeriodicTask.Close(); err != nil {
-		log.Warn("report task close error: %s", err)
 		log.Warn("report task close error: ", err)
 	}
 	return nil

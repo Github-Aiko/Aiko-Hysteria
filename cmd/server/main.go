@@ -53,6 +53,7 @@ func main() {
 			&cli.StringFlag{
 				Name:        "api",
 				Usage:       "Server address",
+				EnvVars:     []string{"X_PANDA_HYSTERIA_API", "API"},
 				Required:    true,
 				Destination: &apiConfig.APIHost,
 			},

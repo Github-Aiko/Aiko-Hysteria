@@ -2,8 +2,6 @@ package app
 
 import (
 	"crypto/tls"
-	"github.com/lucas-clemente/quic-go"
-	"github.com/sirupsen/logrus"
 	"github.com/Github-Aiko/Aiko-Hysteria/internal/app/service"
 	"github.com/Github-Aiko/Aiko-Hysteria/internal/pkg/core"
 	"github.com/Github-Aiko/Aiko-Hysteria/internal/pkg/pmtud"
@@ -58,7 +56,7 @@ func Run(config *ServerConfig, usersService *service.UsersService) {
 		MaxConnectionReceiveWindow:     config.ReceiveWindowClient,
 		MaxIncomingStreams:             int64(config.MaxConnClient),
 		MaxIdleTimeout:                 ServerMaxIdleTimeoutSec * time.Second,
-		KeepAlivePeriod:                0, // Keep alive should solely be client's responsibility
+		KeepAlivePeriod:                10 * time.Second, // Keep alive should solely be client's responsibility
 		DisablePathMTUDiscovery:        config.DisableMTUDiscovery,
 		EnableDatagrams:                true,
 	}

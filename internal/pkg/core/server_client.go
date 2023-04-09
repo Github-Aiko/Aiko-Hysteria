@@ -4,15 +4,14 @@ import (
 	"bytes"
 	"context"
 	"github.com/Github-Aiko/Aiko-Hysteria/internal/app/service"
+	"github.com/Github-Aiko/Aiko-Hysteria/internal/pkg/transport"
+	"github.com/Github-Aiko/Aiko-Hysteria/internal/pkg/utils"
+	"github.com/lunixbochs/struc"
+	"github.com/quic-go/quic-go"
 	"math/rand"
 	"net"
 	"strconv"
 	"sync"
-
-	"github.com/lucas-clemente/quic-go"
-	"github.com/lunixbochs/struc"
-	"github.com/Github-Aiko/Aiko-Hysteria/internal/pkg/transport"
-	"github.com/Github-Aiko/Aiko-Hysteria/internal/pkg/utils"
 )
 
 const udpBufferSize = 4096
@@ -131,7 +130,7 @@ func (c *serverClient) handleMessage(msg []byte) {
 		var err error
 
 		ipAddr, isDomain, err = c.Transport.ResolveIPAddr(dfMsg.Host)
-		if err != nil && !(isDomain && c.Transport.ProxyEnabled()) { // Special case for domain requests + SOCKS5 outbound
+		if err != nil { // Special case for domain requests + SOCKS5 outbound
 			return
 		}
 
@@ -146,7 +145,6 @@ func (c *serverClient) handleMessage(msg []byte) {
 		if c.TrafficItem != nil {
 			c.TrafficItem.Up.Add(int64(len(dfMsg.Data)))
 		}
-
 	}
 
 }
@@ -257,7 +255,7 @@ func (c *serverClient) handleUDP(stream quic.Stream) {
 				_ = struc.Pack(&msgBuf, &msg)
 				sendErr := c.CC.SendMessage(msgBuf.Bytes())
 				if sendErr != nil {
-					if errSize, ok := sendErr.(quic.ErrMessageToLarge); ok {
+					if errSize, ok := sendErr.(quic.ErrMessageTooLarge); ok {
 						// need to frag
 						msg.MsgID = uint16(rand.Intn(0xFFFF)) + 1 // msgID must be > 0 when fragCount > 1
 						fragMessages := fragUDPMessage(msg, int(errSize))

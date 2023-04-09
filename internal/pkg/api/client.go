@@ -3,10 +3,11 @@ package api
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/go-resty/resty/v2"
-	log "github.com/sirupsen/logrus"
 	"strconv"
 	"time"
+
+	"github.com/go-resty/resty/v2"
+	log "github.com/sirupsen/logrus"
 )
 
 // Config  api config
@@ -70,7 +71,7 @@ func (c *Client) assembleURL(path string) string {
 
 // GetNodeInfo will pull NodeInfo Config from sspanel
 func (c *Client) GetNodeInfo() (nodeInfo *NodeInfo, err error) {
-	var path = "/api/v1/server/hysteria/config"
+	var path = "/api/v1/server/Aiko/config"
 	res, err := c.client.R().
 		ForceContentType("application/json").
 		SetQueryParam("node_id", strconv.Itoa(c.config.NodeID)).
@@ -98,7 +99,7 @@ func (c *Client) GetNodeInfo() (nodeInfo *NodeInfo, err error) {
 
 // GetUserList will pull user form sspanel
 func (c *Client) GetUserList() (UserList *[]UserInfo, err error) {
-	var path = "/api/v1/server/hysteria/users"
+	var path = "/api/v1/server/Aiko/users"
 	res, err := c.client.R().
 		SetQueryParam("node_id", strconv.Itoa(c.config.NodeID)).
 		ForceContentType("application/json").
@@ -125,9 +126,9 @@ func (c *Client) GetUserList() (UserList *[]UserInfo, err error) {
 	return repUserList.Data, nil
 }
 
-//ReportUserTraffic reports the user traffic
+// ReportUserTraffic reports the user traffic
 func (c *Client) ReportUserTraffic(userTraffic []*UserTraffic) error {
-	var path = "/api/v1/server/hysteria/submit"
+	var path = "/api/v1/server/Aiko/push"
 
 	res, err := c.client.R().
 		SetQueryParam("node_id", strconv.Itoa(c.config.NodeID)).

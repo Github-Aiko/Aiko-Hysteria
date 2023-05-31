@@ -48,22 +48,22 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v2
         with:
-          go-version: ^1.18.2
+          go-version: ^1.19.3
       - name: Get project dependencies
         run: go mod download
       - name: Build Server
         run: |
           mkdir -p build_assets
-          go build -v -o build_assets/Aiko-Hysteria -trimpath -ldflags "-s -w" ./cmd/server
+          go build -v -o build_assets/server-hysteria -trimpath -ldflags "-s -w" ./cmd/server
       - name: Build Mips softfloat Server
         if: matrix.goarch == 'mips' || matrix.goarch == 'mipsle'
         run: |
-            GOMIPS=softfloat go build -v -o build_assets/Aiko-Hysteria-softfloat -trimpath -ldflags "-s -w" ./cmd/server
+            GOMIPS=softfloat go build -v -o build_assets/server-hysteria-softfloat -trimpath -ldflags "-s -w" ./cmd/server
       - name: Rename Windows Server
         if: matrix.goos == 'windows'
         run: |
           cd ./build_assets || exit 1
-          mv Aiko-Hysteria Aiko-Hysteria.exe
+          mv server-hysteria server-hysteria.exe
       - name: Prepare to release
         run: |
           cp ${GITHUB_WORKSPACE}/README.md ./build_assets/README.md
@@ -73,9 +73,9 @@ jobs:
         run: |
           pushd build_assets || exit 1
           touch -mt $(date +%Y01010000) *
-          zip -9vr ../Aiko-Hysteria-$ASSET_NAME.zip .
+          zip -9vr ../server-hysteria-$ASSET_NAME.zip .
           popd || exit 1
-          FILE=./Aiko-Hysteria-$ASSET_NAME.zip
+          FILE=./server-hysteria-$ASSET_NAME.zip
           DGST=$FILE.dgst
           for METHOD in {"md5","sha1","sha256","sha512"}
           do
@@ -83,19 +83,19 @@ jobs:
           done
       - name: Change the name
         run: |
-          mv build_assets Aiko-Hysteria-$ASSET_NAME
+          mv build_assets server-hysteria-$ASSET_NAME
       - name: Upload files to Artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: Aiko-Hysteria-${{ steps.get_filename.outputs.ASSET_NAME }}
+          name: server-hysteria-${{ steps.get_filename.outputs.ASSET_NAME }}
           path: |
-            ./Aiko-Hysteria-${{ steps.get_filename.outputs.ASSET_NAME }}/*
+            ./server-hysteria-${{ steps.get_filename.outputs.ASSET_NAME }}/*
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
         if: github.event_name == 'release'
         with:
           repo_token: ${{secrets.GITHUB_TOKEN}}
-          file: ./Aiko-Hysteria-${{ steps.get_filename.outputs.ASSET_NAME }}.zip*
+          file: ./server-hysteria-${{ steps.get_filename.outputs.ASSET_NAME }}.zip*
           tag: ${{ github.ref }}
           file_glob: true
          

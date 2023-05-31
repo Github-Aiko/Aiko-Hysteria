@@ -1,10 +1,11 @@
 package transport
 
 import (
-	"github.com/Github-Aiko/Aiko-Hysteria/internal/pkg/utils"
 	"net"
 	"strconv"
 	"time"
+
+	"github.com/Github-Aiko/Aiko-Hysteria/internal/pkg/utils"
 
 	"github.com/Github-Aiko/Aiko-Hysteria/internal/pkg/sockopt"
 )

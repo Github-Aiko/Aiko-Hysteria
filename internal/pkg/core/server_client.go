@@ -3,15 +3,16 @@ package core
 import (
 	"bytes"
 	"context"
+	"math/rand"
+	"net"
+	"strconv"
+	"sync"
+
 	"github.com/Github-Aiko/Aiko-Hysteria/internal/app/service"
 	"github.com/Github-Aiko/Aiko-Hysteria/internal/pkg/transport"
 	"github.com/Github-Aiko/Aiko-Hysteria/internal/pkg/utils"
 	"github.com/lunixbochs/struc"
 	"github.com/quic-go/quic-go"
-	"math/rand"
-	"net"
-	"strconv"
-	"sync"
 )
 
 const udpBufferSize = 4096

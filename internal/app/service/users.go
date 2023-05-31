@@ -2,13 +2,16 @@ package service
 
 import (
 	"fmt"
+
 	"github.com/Github-Aiko/Aiko-Hysteria/internal/pkg/api"
+	"github.com/Github-Aiko/Aiko-Hysteria/internal/pkg/counter"
+	"github.com/xtls/xray-core/common/task"
+
+	"sync"
+	"time"
+
+	log "github.com/sirupsen/logrus"
 )
-import "github.com/Github-Aiko/Aiko-Hysteria/internal/pkg/counter"
-import "github.com/xtls/xray-core/common/task"
-import log "github.com/sirupsen/logrus"
-import "sync"
-import "time"
 
 type Config struct {
 	FetchUserInterval     time.Duration

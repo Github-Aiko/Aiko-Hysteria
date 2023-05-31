@@ -2,6 +2,10 @@ package app
 
 import (
 	"crypto/tls"
+	"io"
+	"net"
+	"time"
+
 	"github.com/Github-Aiko/Aiko-Hysteria/internal/app/service"
 	"github.com/Github-Aiko/Aiko-Hysteria/internal/pkg/core"
 	"github.com/Github-Aiko/Aiko-Hysteria/internal/pkg/pmtud"
@@ -10,9 +14,6 @@ import (
 	"github.com/Github-Aiko/Aiko-Hysteria/internal/pkg/utils"
 	"github.com/quic-go/quic-go"
 	"github.com/sirupsen/logrus"
-	"io"
-	"net"
-	"time"
 )
 
 var defaultIPMasker = &utils.IpMasker{}

